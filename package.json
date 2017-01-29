@@ -1,0 +1,37 @@
+{
+  "name": "eargs",
+  "version": "0.0.1",
+  "description": " Easy JavaScript function argument ",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/jasmine test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gKodes/eargs.git"
+  },
+  "keywords": [
+    "function",
+    "argument",
+    "parsing",
+    "key",
+    "value",
+    "easy"
+  ],
+  "author": "Kamalakar Gadireddy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gKodes/eargs/issues"
+  },
+  "homepage": "https://github.com/gKodes/eargs#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.14.0",
+    "istanbul": "^0.4.5",
+    "jasmine": "^2.5.3"
+  },
+  "dependencies": {
+    "debug": "^2.6.0",
+    "functioner": "^0.2.1"
+  }
+}
