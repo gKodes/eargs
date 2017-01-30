@@ -1,8 +1,9 @@
+/*global describe it */
 "use strict";
 
-const eargs = require("../../lib/eargs");
 const argAs = require("../../lib/arg/as");
 const bundle = require("../../lib/arg/bundle");
+const optional = require("../../lib/arg/optional");
 const assert = require("chai").assert;
 
 require("debug").enable("eargs:bundle");
@@ -73,13 +74,31 @@ describe("Argument bundle", function() {
 
   it("when a matcher and var_args should the single matcher attribute on kwargs", function() {
     var kwargs = {};
-    bundle(asTrue("tr"), asTrueIfy("ty"))([1, 3, 4, 5], kwargs)
+    bundle(asTrue("tr"), asTrueIfy("ty"))([1, 3, 4, 5], kwargs);
     assert.property(kwargs, "tr");
   });
 
   it("when a matcher and var_args should the remaning args as array attribute for var_args on kwargs", function() {
     var kwargs = {};
-    bundle(asTrue("tr"), asTrueIfy("ty"))([1, 3, 4, 5], kwargs)
+    bundle(asTrue("tr"), asTrueIfy("ty"))([1, 3, 4, 5], kwargs);
     assert.lengthOf(kwargs.ty, 3);
   });
+
+  it("when 3 asserts given and fail on the second should return false", function() {
+    var kwargs = {};
+    assert.isFalse(bundle(asTrue("tr"), asFalse("rf"), asTrueIfy("ty"))([1, 3, 4, 5], kwargs));
+  });
+
+  it("when only one optional matcher is given and does not match should return false", function() {
+    var kwargs = {};
+    var bdl = bundle(optional(asFalse("tr")));
+    assert.isFalse(bdl([1, 3, 4, 5], kwargs));
+  });
+
+  it("when an matcher is marked optional and does not match should continue to next match", function() {
+    var kwargs = {};
+    bundle(asTrue("tr"), optional(asFalse("rf")), asTrueIfy("ty"))([1, 3, 4, 5], kwargs);
+    assert.lengthOf(kwargs.ty, 3);
+  });
+
 });

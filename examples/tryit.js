@@ -1,8 +1,3 @@
-# Easy Arguments (eargs)
-
-An utility to help capture function arguments as key:value pairs.
-
-```javascript
 const eargs = require("eargs");
 const As =  eargs.As;
 
@@ -36,10 +31,7 @@ var splice = function() {
     console.info(kwargs.start, kwargs.deleteCount, kwargs.items);
   }
 }();
-```
 
-## TODO
- - [X] Add support for optional arguments to reduce the redundancy 
- - [ ] Add support for grouping of arguments
- - [X] Add unitilites to check kwargs response
-    - check if captured any arguments
+splice(1); // 1 undefined undefined
+splice(1, 2); // 1 2 undefined
+splice(1, 2, "a", "b", "c"); // 1 2 ["a", "b", "c"]

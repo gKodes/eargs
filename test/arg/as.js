@@ -1,3 +1,4 @@
+/*global describe it xit */
 "use strict";
 
 const argAs = require("../../lib/arg/as");
@@ -16,10 +17,11 @@ describe("Argument as", function() {
     }, TypeError );
   });
 
-  it("when invoked functioner return assert function which is invoked for the args given should define the arg on kwargs", function() {
+  // NOTE: We are not doing transforamtions
+  ("when invoked functioner return assert function which is invoked for the args given should define the arg on kwargs", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return functioner;
       }
     }
@@ -32,7 +34,7 @@ describe("Argument as", function() {
   it("when a argument is defined with ... its name on kwargs hould not have the ...", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return true;
       }
     }
@@ -45,7 +47,7 @@ describe("Argument as", function() {
   it("when a argument is a varible lenght arg defined on kwargs should be array of the remaining arguments", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return true;
       }
     }
@@ -55,62 +57,63 @@ describe("Argument as", function() {
     assert.lengthOf( rul.none , 2 );
   });
 
-  it("when assert return false argAs should return false", function() {
+  it("when assert return false argAs should return 0", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return false;
       }
     }
 
-    assert.isFalse( argAs(functioner, 1, 'none')([1, 2], rul) );
+    assert.strictEqual( argAs(functioner, 1, 'none')([1, 2], rul), 0 );
   });
 
-  it("when assert return undefined argAs should return true", function() {
+  it("when assert return undefined argAs should return 1", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return undefined;
       }
     }
 
-    assert.isTrue( argAs(functioner, 1, 'none')([1, 2], rul) );
+    assert.strictEqual( argAs(functioner, 1, 'none')([1, 2], rul), 1 );
   });
 
-  it("when assert return null argAs should return true", function() {
+  it("when assert return null argAs should return 1", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return null;
       }
     }
 
-    assert.isTrue( argAs(functioner, 1, 'none')([1, 2], rul) );
+    assert.strictEqual( argAs(functioner, 1, 'none')([1, 2], rul), 1 );
   });
 
-  it("when assert return an empty string argAs should return true", function() {
+  it("when assert return an empty string argAs should return 1", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return '';
       }
     }
 
-    assert.isTrue( argAs(functioner, 1, 'none')([1, 2], rul) );
+    assert.strictEqual( argAs(functioner, 1, 'none')([1, 2], rul), 1 );
   });
 
-  it("when assert return an empty array argAs should return true", function() {
+  it("when assert return an empty array argAs should return 1", function() {
     var rul = {};
     var functioner = function functioner() {
-      return function assert(value) {
+      return function assert() {
         return [];
       }
     }
 
-    assert.isTrue( argAs(functioner, 1, 'none')([1, 2], rul) );
+    assert.strictEqual( argAs(functioner, 1, 'none')([1, 2], rul), 1 );
   });
 
-  it("when assert return an empty array argAs should return true", function() {
+  // NOTE: We are not doing transforamtions
+  ("when assert return an array like object argAs should return 1", function() {
     var rul = {};
     var functioner = function functioner() {
       var args = arguments;
@@ -124,17 +127,30 @@ describe("Argument as", function() {
     assert.lengthOf( rul.none, 4 );
   });
 
+  it("when a single element is passed for varible lenght argument it define array on kwargs", function() {
+    var rul = {};
+    var functioner = function functioner() {
+      return function assert() {
+        return true;
+      }
+    }
+
+    argAs(functioner, argAs.VAR_ARGS, 'none')([1], rul);
+
+    assert.isArray( rul.none );
+  });
+
 
   describe('lnk', function() {
     it("should return a bound function of argAs with first two arguments bound", function() {
       var rul = {};
       var functioner = function functioner() {
-        return function assert(value) {
+        return function assert() {
           return true;
         }
       }
 
-      assert.isTrue( argAs.lnk(functioner)('none')([1, 2], rul) );
+      assert.strictEqual( argAs.lnk(functioner)('none')([1, 2], rul), 1 );
     });
   });
 });

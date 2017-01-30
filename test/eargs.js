@@ -1,3 +1,4 @@
+/*global describe it */
 "use strict";
 
 const eargs = require("../lib/eargs");
@@ -55,7 +56,7 @@ describe("Easy Arguments", function() {
         return true;
       }
     }, argAs.VAR_ARGS);
-    
+
     assert.lengthOf( eargs([1, 2, 3, 4], as("ty")).ty, 4 );
   });
 
@@ -86,5 +87,40 @@ describe("Easy Arguments", function() {
     });
     
     assert.notProperty( eargs([1, 2, 3, 4], as("ty")), "ty" );
+  });
+
+  it("when only matches are given should return bound function", function() {
+    var as = 
+    argAs.lnk(function() {
+      return function() {
+        return true;
+      }
+    });
+    
+    assert.isFunction( eargs(as("ty")) );
+  });
+
+  it("when argyments are passed at last should define attributes on kwargs", function() {
+    var as = 
+    argAs.lnk(function() {
+      return function() {
+        return true;
+      }
+    });
+    
+    assert.notProperty( eargs(as("ty"), [1, 2, 3, 4]), "ty" );
+  });
+
+  it("when argyments is not an array like object should throw TypeError", function() {
+    var as = 
+    argAs.lnk(function() {
+      return function() {
+        return true;
+      }
+    });
+    
+    assert.throws(function() {
+      eargs(as("ty"), {});
+    }, TypeError);
   });
 });
