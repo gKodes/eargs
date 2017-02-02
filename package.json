@@ -1,6 +1,6 @@
 {
   "name": "eargs",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "An utility to help capture function arguments as key:value pairs",
   "main": "lib/index.js",
   "scripts": {
